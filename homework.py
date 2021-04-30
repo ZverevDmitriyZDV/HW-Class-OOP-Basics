@@ -16,6 +16,35 @@ class Student:
         else:
             return 'Ошибка'
 
+    def mid_score(self, grades_dict):
+        total_score = 0
+        total_number = 0
+        for key in grades_dict.keys():
+            for elem in grades_dict[key]:
+                total_score += elem
+                total_number += 1
+        if total_number:
+            return total_score / total_number
+        else:
+            return "Работ не обнаружено"
+
+    def list_process(self, list_needed):
+        if len(list_needed):
+            result_str = list_needed[0]
+            for i in range(1, len(list_needed)):
+                result_str += f'{elem}, '
+        else:
+            result_str = 'Не обнаруженно'
+        return result_str
+
+    def __str__(self):
+        result = (f'Имя: {self.name}\n'
+                  f'Фамилия: {self.surname}\n'
+                  f'Средняя оценка за домашние задания: {self.mid_score(self.grades)}\n'
+                  f'Курсы в процессе изучения: {self.list_process(self.courses_in_progress)}\n'
+                  f'Завершенные курсы: {self.list_process(self.finished_courses)}\n')
+        return result
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -53,9 +82,13 @@ mentor_reviewer.courses_attached += ['Python']
 mentor_lecturer.courses_attached += ['Python']
 
 mentor_reviewer.rate_hw(best_student, 'Python', 10)
+mentor_reviewer.rate_hw(best_student, 'Python', 9)
+mentor_reviewer.rate_hw(best_student, 'Python', 8)
+mentor_reviewer.rate_hw(best_student, 'Python', 6)
 best_student.rate_lector(mentor_lecturer, 'Python', 8)
 best_student.rate_lector(mentor_lecturer, 'Pythonize', 6)
 best_student.rate_lector(mentor_reviewer, 'Pythonize', 0)
 
-print(best_student.grades)
-print(mentor_lecturer.grades)
+# print(best_student.grades)
+# print(mentor_lecturer.grades)
+print(best_student)
