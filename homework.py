@@ -24,10 +24,20 @@ class Mentor:
             return 'Ошибка'
 
 
+class Lecturer(Mentor):
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+
+
+class Reviewer(Mentor):
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+
+
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
 
-cool_mentor = Mentor('Some', 'Buddy')
+cool_mentor = Reviewer('Some', 'Buddy')
 cool_mentor.courses_attached += ['Python']
 
 cool_mentor.rate_hw(best_student, 'Python', 10)
