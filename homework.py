@@ -26,13 +26,13 @@ class Student:
         if total_number:
             return total_score / total_number
         else:
-            return "Работ не обнаружено"
+            return "Оценок не обнаружено"
 
     def list_process(self, list_needed):
         if len(list_needed):
             result_str = list_needed[0]
             for i in range(1, len(list_needed)):
-                result_str += f'{elem}, '
+                result_str += f', {list_needed[i]}'
         else:
             result_str = 'Не обнаруженно'
         return result_str
@@ -58,6 +58,12 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
+    def __str__(self):
+        result = (f'Имя: {self.name}\n'
+                  f'Фамилия: {self.surname}\n'
+                  f'Средняя оценка за лекции {Student.mid_score(self,self.grades)}\n')
+        return result
+
 
 class Reviewer(Mentor):
     def __init__(self, name, surname):
@@ -72,9 +78,15 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+    def __str__(self):
+        result = (f'Имя: {self.name}\n'
+                  f'Фамилия: {self.surname}\n')
+        return result
+
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
+best_student.courses_in_progress += ['BIM']
 
 mentor_reviewer = Reviewer('Some', 'Buddy Revier')
 mentor_lecturer = Lecturer('Boddy', 'Some Lector')
@@ -83,8 +95,8 @@ mentor_lecturer.courses_attached += ['Python']
 
 mentor_reviewer.rate_hw(best_student, 'Python', 10)
 mentor_reviewer.rate_hw(best_student, 'Python', 9)
-mentor_reviewer.rate_hw(best_student, 'Python', 8)
-mentor_reviewer.rate_hw(best_student, 'Python', 6)
+mentor_reviewer.rate_hw(best_student, 'BIM', 8)
+mentor_reviewer.rate_hw(best_student, 'BIM', 6)
 best_student.rate_lector(mentor_lecturer, 'Python', 8)
 best_student.rate_lector(mentor_lecturer, 'Pythonize', 6)
 best_student.rate_lector(mentor_reviewer, 'Pythonize', 0)
@@ -92,3 +104,5 @@ best_student.rate_lector(mentor_reviewer, 'Pythonize', 0)
 # print(best_student.grades)
 # print(mentor_lecturer.grades)
 print(best_student)
+print(mentor_lecturer)
+print(mentor_reviewer)
