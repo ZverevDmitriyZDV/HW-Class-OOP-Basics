@@ -30,7 +30,7 @@ class Student:
                   f'Фамилия: {self.surname}\n'
                   f'Средняя оценка за домашние задания: {mid_score(self.grades)}\n'
                   f'Курсы в процессе изучения: {self.list_process(self.courses_in_progress)}\n'
-                  f'Завершенные курсы: {self.list_process(self.finished_courses)}\n')
+                  f'Завершенные курсы: {self.list_process(self.finished_courses)}')
         return result
 
     def __lt__(self, other_student):
@@ -52,7 +52,7 @@ class Lecturer(Mentor):
     def __str__(self):
         result = (f'Имя: {self.name}\n'
                   f'Фамилия: {self.surname}\n'
-                  f'Средняя оценка за лекции {mid_score(self.grades)}\n')
+                  f'Средняя оценка за лекции {mid_score(self.grades)}')
         return result
 
     def __lt__(self, other_lecturer):
@@ -74,7 +74,7 @@ class Reviewer(Mentor):
 
     def __str__(self):
         result = (f'Имя: {self.name}\n'
-                  f'Фамилия: {self.surname}\n')
+                  f'Фамилия: {self.surname}')
         return result
 
 
@@ -83,7 +83,7 @@ def mid_score(grades_dict):
     total_number = 0
     for key in grades_dict.keys():
         for elem in grades_dict[key]:
-            total_score += elem
+            total_score += int(elem)
             total_number += 1
     if total_number:
         return total_score / total_number
@@ -103,8 +103,19 @@ def compare(class1, class2, root_class):
             line = f'{candidate2} имеет средний балл больше чем {candidate1}'
         return line
     else:
-        err_line = f'Некорректный ввод все данный должны быть {root_class}'
+        err_line = f'Некорректный ввод все данный должны быть: {root_class.__name__}'
         return err_line
+
+
+def mid_score_by_course(person_list, course_name, check_class):
+    grades = []
+    for i in range(len(person_list)):
+        if not isinstance(person_list[i], check_class):
+            return f'Некорректный ввод все данные должны быть {check_class.__name__}'
+        if course_name in person_list[i].grades.keys():
+            grades += person_list[i].grades[course_name]
+    result = f'средний балл за курс {course_name} среди {check_class.__name__} составляет: {mid_score({course_name: grades})}'
+    return result
 
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
@@ -165,4 +176,12 @@ print(mentor2_lecturer < best_student)
 print('________________')
 print(best_student < mentor2_lecturer)
 print(best_student < mid_student)
-
+print('________________')
+need_course = 'BIM'
+print(mid_score_by_course([best_student, mid_student], need_course, Student))
+need_course2 = 'Python'
+print(mid_score_by_course([best_student, mid_student], need_course2, Student))
+print('________________')
+print(mid_score_by_course([mentor2_lecturer, mentor_lecturer], need_course, Lecturer))
+print(mid_score_by_course([mentor2_lecturer, mentor_lecturer], need_course2, Lecturer))
+print(mid_score_by_course([mentor2_lecturer, mentor_lecturer,mentor2_reviewer], need_course2, Lecturer))
